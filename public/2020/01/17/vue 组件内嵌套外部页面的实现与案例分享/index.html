@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta
+		content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+		name="viewport"
+	/>
+	<title>Hexo</title>
+	
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+	<body>
+		<div class="sidebar">
+	<div class="blog-title">
+		<a href="/" class="logo">Hexo</a>
+	</div>
+	<nav class="navbar">
+		<ul class="menu">
+			
+			<li class="menu-item">
+				<a href="/" class="menu-item-link">
+					Home
+				</a>
+			</li>
+			
+			<li class="menu-item">
+				<a href="/archives" class="menu-item-link">
+					Archives
+				</a>
+			</li>
+			
+			<li class="menu-item">
+				<a href="https://github.com/ahonn" target="_blank" rel="noopener" class="menu-item-link">
+					Github
+				</a>
+			</li>
+			
+		</ul>
+	</nav>
+</div>
+
+		<main class="main">
+			<article class="post">
+	<div class="post-title">
+		<h2 class="title">vue 组件内嵌套外部页面的实现与案例分享</h2>
+	</div>
+	<div class="post-meta">
+		<span class="post-time">2020-01-17</span>
+	</div>
+	<div class="post-content">
+		<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1.前言"></a>1.前言</h3><blockquote>
+<p>在 web 页面开发中，常常会有这样的需求：<br></p>
+<p>&emsp;&emsp;<strong>在当前页面内打开一个外部页面。</strong><br></p>
+<p>&emsp;&emsp;如果仅仅是跳转到外部页面，对于有经验的开发者来说，应该没有什么难度。但常常，需要打开的页面仅仅是当前已有页面的一部分，即需要嵌套到当前页面内，往往就不太好实现了。</p>
+</blockquote>
+<h3 id="2-解决方案"><a href="#2-解决方案" class="headerlink" title="2.解决方案"></a>2.解决方案</h3><p>使用 <strong>iframe</strong> 加载外部页面。</p>
+<p>html 页面内嵌套 iframe，并将 iframe 的 src 属性绑定为目标外部页面链接。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;div id&#x3D;&quot;iframe-container&quot;&gt;</span><br><span class="line">     &lt;iframe :src&#x3D;&quot;iframeSrc&quot; scrolling&#x3D;&quot;auto&quot; frameborder&#x3D;&quot;0&quot; id&#x3D;&quot;iframe&quot;&gt;&lt;&#x2F;iframe&gt;</span><br><span class="line"> &lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-示例"><a href="#3-示例" class="headerlink" title="3.示例"></a>3.示例</h3><p><strong>需求：</strong> 点击电商导航内菜单，打开相应页面，在新开页面中，显示页面加载状态，可以回退和直接关闭新开页面。</p>
+<p><img src="../images/iframe-example.png" alt="iframe-example.png"></p>
+<p><strong>分析：</strong></p>
+<ul>
+<li>图一和图二顶部样式不一致，因此，是两个独立的组件。</li>
+<li>点击图一页面中的菜单，跳转到图二页面，需要配置路由。</li>
+<li>如何传递外部页面的地址？路由传参？vuex?</li>
+</ul>
+<p><strong>实现：</strong><br>&emsp;&emsp;Tips： 本例基于 vue + vue-router + vuex + vant 实现</p>
+<p>图一页面布局：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;div class&#x3D;&quot;module-box&quot;&gt;</span><br><span class="line">     &lt;div class&#x3D;&quot;module-title&quot;&gt;电商导航&lt;&#x2F;div&gt;</span><br><span class="line">     &lt;van-grid :column-num&#x3D;&quot;3&quot;&gt;</span><br><span class="line">         &lt;van-grid-item v-for&#x3D;&quot;(item,index) in eShopNavItems&quot;</span><br><span class="line">                        :key&#x3D;&quot;index&quot;</span><br><span class="line">                        :icon&#x3D;&quot;item.iconPath&quot;</span><br><span class="line">                        :text&#x3D;&quot;item.name&quot;</span><br><span class="line">                        @click&#x3D;&quot;gotoPage(item.path)&quot; &#x2F;&gt;</span><br><span class="line">     &lt;&#x2F;van-grid&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+
+<p>js 部分：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123;&#125;,</span><br><span class="line">  props: &#123;&#125;,</span><br><span class="line">  data() &#123;</span><br><span class="line">    return &#123;</span><br><span class="line">      eShopNavItems: [</span><br><span class="line">        &#123;</span><br><span class="line">          name: &#39;京东&#39;,</span><br><span class="line">          iconPath: require(&#39;..&#x2F;..&#x2F;..&#x2F;assets&#x2F;images&#x2F;lifeServices&#x2F;index&#x2F;jd.png&#39;),</span><br><span class="line">          path: &#39;&#x2F;home&#x2F;lifeServices&#x2F;jd&#39;,</span><br><span class="line">        &#125;,</span><br><span class="line">        &lt;!-- 其他菜单配置 --&gt;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    onClickLeft() &#123;</span><br><span class="line">      this.$router.go(-1)</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    gotoPage(path) &#123;</span><br><span class="line">      this.$router.push(path)</span><br><span class="line"></span><br><span class="line">      &lt;!-- 存储目标外链的url及要显示的标题 --&gt;</span><br><span class="line">      &lt;!-- 这部分写在路由配置里的meta参数下 --&gt;</span><br><span class="line"></span><br><span class="line">      this.$store.state.iframeSrc &#x3D; this.$route.meta.link</span><br><span class="line">      this.$store.state.iframeTitle &#x3D; this.$route.meta.title</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>路由配置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">const routes &#x3D; [&#123;</span><br><span class="line">  path: &#39;&#x2F;home&#x2F;lifeServices&#x2F;externalLink&#39;,</span><br><span class="line">  name: &#39;externalLink&#39;,</span><br><span class="line">  component: LinkHome,</span><br><span class="line">  children: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;home&#x2F;lifeServices&#x2F;jd&#39;,</span><br><span class="line">      meta: &#123;</span><br><span class="line">        link: &#39;https:&#x2F;&#x2F;m.jd.com&#x2F;&#39;,</span><br><span class="line">        title: &#39;京东(jd.com)&#39;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>接下来关键的实现，也是最核心的点在于“LinkHome”组件的实现。</p>
+<p>LinkHome.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;link-home&quot;&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;header&quot;&gt;</span><br><span class="line">      &lt;van-nav-bar</span><br><span class="line">        :title&#x3D;&quot;$store.state.iframeTitle&quot;</span><br><span class="line">        left-arrow</span><br><span class="line">        @click-left&#x3D;&quot;onClickLeft&quot;</span><br><span class="line">      &gt;&lt;&#x2F;van-nav-bar&gt;</span><br><span class="line">      &lt;van-icon name&#x3D;&quot;cross&quot; class&#x3D;&quot;close&quot; @click&#x3D;&quot;closeTab&quot; &#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line"></span><br><span class="line">    &lt;div id&#x3D;&quot;iframe-container&quot;&gt;</span><br><span class="line">      &lt;iframe :src&#x3D;&quot;$store.state.iframeSrc&quot; scrolling&#x3D;&quot;auto&quot; frameborder&#x3D;&quot;0&quot; id&#x3D;&quot;iframe&quot;&gt;&lt;&#x2F;iframe&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">import NProgress from &#39;nprogress&#39;</span><br><span class="line"></span><br><span class="line">export default &#123;</span><br><span class="line">  mounted() &#123;</span><br><span class="line">    let iframe &#x3D; document.getElementById(&#39;iframe&#39;)</span><br><span class="line">    NProgress.start()</span><br><span class="line"></span><br><span class="line">    iframe.onload &#x3D; function() &#123;</span><br><span class="line">      NProgress.done()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    onClickLeft() &#123;</span><br><span class="line">      this.$router.go(-1)</span><br><span class="line">      NProgress.done()</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    closeTab() &#123;</span><br><span class="line">      this.$router.replace(&#39;&#x2F;home&#x2F;lifeServices&#x2F;index&#39;)</span><br><span class="line">      NProgress.done()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- css样式省略 --&gt;</span><br></pre></td></tr></table></figure>
+
+<p>给 iframe 的 src 属性绑定值，且为目标外部页面地址。即可嵌套加载外部页面。</p>
+<p>页面加载状态使用<a href="https://github.com/rstacruz/nprogress" target="_blank" rel="noopener">NProgress</a>。</p>
+<p>在 vue.js 的 mounted 生命周期内，开始加载进度条。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NProgress.start()</span><br></pre></td></tr></table></figure>
+
+<p>获取 iframe 元素，当 iframe 页面加载完成后，关闭进度条。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iframe.onload &#x3D; function() &#123;</span><br><span class="line">  NProgress.done()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当后退或者关闭当前页面时，也应该一并关闭进度条提示。因为当页面还没有加载完时，后退或者关闭页面，将会导致进度条一致存在。</p>
+<p><strong>特别提示:</strong> 关闭页面，即回到主页时，应使用 <strong><code>this.$router.replace</code></strong> 而不是 <code>this.$router.push</code>，这两个同样是跳转到指定的 url，但是 <code>this.$router.replace</code> 不会向 history 里面添加新的记录。回到主页，再后退，应该是回到进入主页的上一个页面，而不是刚才打开的外部页面。</p>
+
+	</div>
+</article>
+
+		</main>
+	</body>
+</html>
