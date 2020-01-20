@@ -22,7 +22,7 @@ html 页面内嵌套 iframe，并将 iframe 的 src 属性绑定为目标外部�
 
 **需求：** 点击电商导航内菜单，打开相应页面，在新开页面中，显示页面加载状态，可以回退和直接关闭新开页面。
 
-![iframe-example.png](../images/iframe-example.png)
+![iframe-example.png](/images/iframe-example.png)
 
 **分析：**
 

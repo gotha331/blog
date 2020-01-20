@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ''
+title: Drops
+subtitle: 'Ashes to ashes,dust to dust.'
 description: ''
 keywords:
-author: John Doe
-language: en
+author: rivers-guitar
+language: zh-CN
 timezone: ''
 
 # URL
@@ -93,7 +93,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: drops
+theme: hexo-theme-drops
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
