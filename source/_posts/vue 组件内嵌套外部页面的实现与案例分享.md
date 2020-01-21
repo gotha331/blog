@@ -12,7 +12,7 @@
 
 html 页面内嵌套 iframe，并将 iframe 的 src 属性绑定为目标外部页面链接。
 
-```
+```html
  <div id="iframe-container">
       <iframe :src="iframeSrc" scrolling="auto" frameborder="0" id="iframe"></iframe>
   </div>
@@ -31,11 +31,13 @@ html 页面内嵌套 iframe，并将 iframe 的 src 属性绑定为目标外部�
 - 如何传递外部页面的地址？路由传参？vuex?
 
 **实现：**
+
 &emsp;&emsp;Tips： 本例基于 vue + vue-router + vuex + vant 实现
+<br>
 
 图一页面布局：
 
-```
+```html
  <div class="module-box">
       <div class="module-title">电商导航</div>
       <van-grid :column-num="3">
@@ -50,7 +52,7 @@ html 页面内嵌套 iframe，并将 iframe 的 src 属性绑定为目标外部�
 
 js 部分：
 
-```
+```javascript
 <script>
 export default {
   components: {},
@@ -63,7 +65,7 @@ export default {
           iconPath: require('../../../assets/images/lifeServices/index/jd.png'),
           path: '/home/lifeServices/jd',
         },
-        <!-- 其他菜单配置 -->
+        // 其他菜单配置 
       ]
     }
   },
@@ -75,8 +77,8 @@ export default {
     gotoPage(path) {
       this.$router.push(path)
 
-      <!-- 存储目标外链的url及要显示的标题 -->
-      <!-- 这部分写在路由配置里的meta参数下 -->
+      // 存储目标外链的url及要显示的标题 
+      // 这部分写在路由配置里的meta参数下
 
       this.$store.state.iframeSrc = this.$route.meta.link
       this.$store.state.iframeTitle = this.$route.meta.title
@@ -89,7 +91,7 @@ export default {
 
 路由配置：
 
-```
+```javascript
 const routes = [{
   path: '/home/lifeServices/externalLink',
   name: 'externalLink',
@@ -109,7 +111,7 @@ const routes = [{
 
 LinkHome.vue
 
-```
+```js
 <template>
   <div class="link-home">
     <div class="header">
@@ -153,7 +155,7 @@ export default {
 }
 </script>
 
-<!-- css样式省略 -->
+ // css样式省略
 
 ```
 
@@ -163,18 +165,18 @@ export default {
 
 在 vue.js 的 mounted 生命周期内，开始加载进度条。
 
-```
+```javascript
 NProgress.start()
 ```
 
 获取 iframe 元素，当 iframe 页面加载完成后，关闭进度条。
 
-```
+```javascript
 iframe.onload = function() {
   NProgress.done()
 }
 ```
 
-当后退或者关闭当前页面时，也应该一并关闭进度条提示。因为当页面还没有加载完时，后退或者关闭页面，将会导致进度条一致存在。
+当后退或者关闭当前页面时，也应该一并关闭进度条提示。因为当页面还没有加载完时，后退或者关闭页面，将会导致进度条一直存在。
 
 **特别提示:** 关闭页面，即回到主页时，应使用 **`this.$router.replace`** 而不是 `this.$router.push`，这两个同样是跳转到指定的 url，但是 `this.$router.replace` 不会向 history 里面添加新的记录。回到主页，再后退，应该是回到进入主页的上一个页面，而不是刚才打开的外部页面。

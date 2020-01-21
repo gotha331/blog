@@ -34,7 +34,8 @@ tags:
 >
 > .eslintrc.js 配置如下：
 
-```
+
+```js
 {
 root: true, // 当前配置为根配置，将不再从上级文件夹查找配置
 parserOptions: {
@@ -179,19 +180,19 @@ extends: ['plugin:vue/recommended', 'eslint:recommended'],// 扩展使用 vue �
 #### 2.2 eslint 安装与配置
 
 - 全局安装 eslint
-  ```
+  ```js
   npm install -g eslint
   ```
 - 全局安装 Prettier
-  ```
+  ```js
   npm install -g prettier
   ```
 - vscode 插件市场搜索 eslint 和 prettier,下载并安装。
-  ![图片1.png](../images/eslint.png) <br>
-  ![图片2.png](../images/prettier.png)
+  ![图片1.png](/images/eslint.png)
+  ![图片2.png](/images/prettier.png)
 - vscode 编辑器 setting.json 中加如下配置：
 
-```
+```js
 /* 开启保存时自动格式化 */
 "editor.formatOnSave": true,
 
@@ -261,12 +262,12 @@ extends: ['plugin:vue/recommended', 'eslint:recommended'],// 扩展使用 vue �
 ```
 
 - 使用 vuecli 创建项目时，不选择 lint 选项。
-  ![vuecli](../images/vuecli.png)
+  ![vuecli](/images/vuecli.png)
 - 在项目开发依赖中，加入@vue/cli-plugin-eslint、babel-eslint、eslint、eslint-plugin-vue、prettier、prettier-eslint 依赖
-  ```
+  ```js
   npm install @vue/cli-plugin-eslint  babel-eslint eslint eslint-plugin-vue prettier prettier-eslint  –-save-dev
   ```
-- 在项目 package.json 内加入 lint 命令。![图片4.png](../images/lint.png)
+- 在项目 package.json 内加入 lint 命令。![图片4.png](/images/lint.png)
 - 开发时，保存文件，即可按 prettier 规则格式化文件，并自动修复可修复的 issue，不能自动修复的，请根据提示，手动修复。
 - 提示：vscode 已设置保存时格式化，但有时并不会格式化文件。已保存的文件还存在报错的，请手动格式化，并修改相应问题后，再次保存。
 - 提交代码前，运行 npm run lint 代码风格检查，确认无误后再进行提交。
