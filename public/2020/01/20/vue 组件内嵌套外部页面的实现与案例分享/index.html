@@ -112,7 +112,7 @@
 <p>获取 iframe 元素，当 iframe 页面加载完成后，关闭进度条。</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><code class="hljs javascript">iframe.onload = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;<br>  NProgress.done()<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>当后退或者关闭当前页面时，也应该一并关闭进度条提示。因为当页面还没有加载完时，后退或者关闭页面，将会导致进度条一致存在。</p>
+<p>当后退或者关闭当前页面时，也应该一并关闭进度条提示。因为当页面还没有加载完时，后退或者关闭页面，将会导致进度条一直存在。</p>
 <p><strong>特别提示:</strong> 关闭页面，即回到主页时，应使用 <strong><code>this.$router.replace</code></strong> 而不是 <code>this.$router.push</code>，这两个同样是跳转到指定的 url，但是 <code>this.$router.replace</code> 不会向 history 里面添加新的记录。回到主页，再后退，应该是回到进入主页的上一个页面，而不是刚才打开的外部页面。</p>
 
 	</div>
